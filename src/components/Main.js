@@ -1,21 +1,24 @@
 import Header from './Header';
+import Nav from './Nav';
+import Form from './Form';
+import Items from './Items';
 
 const Main = {
+
   render: () => {
     const view = `
+            ${Header.render()}
+            ${Nav.render()}
             <section class="main">
-                ${Header.render()}
+                ${Form.render()}
             </section>
+            ${Items.render()}
         `;
     return view;
   },
   after_render: () => {
-    /*
-        document.getElementById("myBtn").addEventListener ("click",  () => {
-            console.log('Yo')
-            alert('Yo')
-        })
-        */
+    Nav.after_render();
+    Form.after_render();
   },
 
 };

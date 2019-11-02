@@ -98,8 +98,16 @@ var _Main2 = _interopRequireDefault(_Main);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var app = function app() {
+  if (localStorage.getItem('items') === null) {
+    localStorage.setItem('items', JSON.stringify([]));
+  };
+  localStorage.setItem('query', '');
+  localStorage.setItem('status', 'all');
+  localStorage.setItem('priority', 'all');
+
   var root = document.getElementById('root');
   root.innerHTML = _Main2.default.render();
+  _Main2.default.after_render();
 };
 app();
 
@@ -111,25 +119,295 @@ app();
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
+
+var _Header = __webpack_require__(2);
+
+var _Header2 = _interopRequireDefault(_Header);
+
+var _Nav = __webpack_require__(3);
+
+var _Nav2 = _interopRequireDefault(_Nav);
+
+var _Form = __webpack_require__(4);
+
+var _Form2 = _interopRequireDefault(_Form);
+
+var _Items = __webpack_require__(5);
+
+var _Items2 = _interopRequireDefault(_Items);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var Main = {
-    render: function render() {
-        var view = /*html*/"\n            <section class=\"main\">\n                <h1> About </h1>\n                <button id=\"myBtn\"> Button</button>\n            </section>\n        ";
-        return view;
-    },
-    after_render: function after_render() {
-        /*
-        document.getElementById("myBtn").addEventListener ("click",  () => {
-            console.log('Yo')
-            alert('Yo')
-        })
-        */
-    }
+
+  render: function render() {
+    var view = '\n            ' + _Header2.default.render() + '\n            ' + _Nav2.default.render() + '\n            <section class="main">\n                ' + _Form2.default.render() + '\n            </section>\n            ' + _Items2.default.render() + '\n        ';
+    return view;
+  },
+  after_render: function after_render() {
+    _Nav2.default.after_render();
+    _Form2.default.after_render();
+  }
 
 };
 
 exports.default = Main;
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var Header = {
+  render: function render() {
+    var view = "\n            <header class=\"header\">\n                <h1> Make your things easier </h1>\n            </header>\n        ";
+    return view;
+  }
+};
+
+exports.default = Header;
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _Form = __webpack_require__(4);
+
+var _Form2 = _interopRequireDefault(_Form);
+
+var _Items = __webpack_require__(5);
+
+var _Items2 = _interopRequireDefault(_Items);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var handleChange = function handleChange() {
+  var input = document.getElementsByName('search-input')[0];
+  input.addEventListener('change', function (event) {
+    localStorage.setItem('query', input.value);
+    _Form2.default.update();
+    _Items2.default.update();
+  });
+
+  var status = document.getElementsByName('select-status')[0];
+  status.addEventListener('change', function (event) {
+    localStorage.setItem('status', status.options[status.selectedIndex].value);
+    _Items2.default.update();
+  });
+
+  var priority = document.getElementsByName('select-priority')[0];
+  priority.addEventListener('change', function (event) {
+    localStorage.setItem('priority', priority.options[priority.selectedIndex].value);
+    _Items2.default.update();
+  });
+};
+
+var createButtonHandler = function createButtonHandler() {
+  var button = document.getElementsByName('create-button')[0];
+  button.addEventListener('click', function (event) {
+    localStorage.setItem('form-visible', JSON.stringify(true));
+    _Form2.default.update();
+  });
+};
+
+var Nav = {
+  render: function render() {
+    var view = '\n            <div class="search-input-wrap">\n              <input class="search-input" type="search" name="search-input" value="" placeholder="Type your query">\n            </div>\n            <div class="select-status-wrap">\n              <select class="select-status" name="select-status">\n                <option value="all" selected>all</option>   \n                <option value="open">open</option> \n                <option value="done">done</option>\n              </select>\n            </div>\n            <div class="select-priority-wrap">\n              <select class="select-priority" name="select-priority">\n                <option value="all" selected>all</option>   \n                <option value="high">high</option>\n                <option value="normal">normal</option>\n                <option value="low">low</option>\n              </select>\n            </div>\n            <div class="create-button-wrap">\n              <button name="create-button">Create</button>\n            </div>\n        ';
+    return view;
+  },
+  after_render: function after_render() {
+    handleChange();
+    createButtonHandler();
+  }
+};
+
+exports.default = Nav;
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _Items = __webpack_require__(5);
+
+var _Items2 = _interopRequireDefault(_Items);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Form = {
+  state: {
+    type: 'create',
+    visible: false
+  },
+  update: function update() {
+    Form.state.visible = JSON.parse(localStorage.getItem('form-visible'));
+    document.getElementsByClassName('form')[0].outerHTML = Form.render();
+    Form.after_render();
+  },
+  render: function render() {
+    var view = '\n        <div class="form" style="display:' + (Form.state.visible ? 'block' : 'none') + '">\n          Title:<input type="text" name="title" value=' + (Form.state.type === 'create' ? 'Title' : 'none') + '>\n          Title:<input type="text" name="description" value=' + (Form.state.type === 'create' ? 'Description' : 'none') + '>\n          <select class="form-priority" name="form-select-priority">\n            <option value="high" selected>high</option>\n            <option value="normal">normal</option>\n            <option value="low">low</option>\n          </select> \n          <div class="form-button-wrap">\n              <button name="cancel-button">Cancel</button>\n          </div>\n          <div class="form-button-wrap">\n              <button name="save-button">Save</button>\n          </div>\n        <div>\n        ';
+    return view;
+  },
+  cancelButtonHandler: function cancelButtonHandler() {
+    var button = document.getElementsByName('cancel-button')[0];
+    button.addEventListener('click', function () {
+      localStorage.setItem('form-visible', JSON.stringify(false));
+      Form.update();
+    });
+  },
+  saveButtonHandler: function saveButtonHandler() {
+    var button = document.getElementsByName('save-button')[0];
+    button.addEventListener('click', function () {
+      var priorityEl = document.getElementsByName('form-select-priority')[0];
+      var item = {
+        title: document.getElementsByName('title')[0].value,
+        description: document.getElementsByName('description')[0].value,
+        priority: priorityEl.options[priorityEl.selectedIndex].value,
+        id: 'f' + (+new Date()).toString(16),
+        status: "open"
+      };
+      var items = JSON.parse(localStorage.getItem('items'));
+      items.push(item);
+      localStorage.setItem('items', JSON.stringify(items));
+      localStorage.setItem('form-visible', JSON.stringify(false));
+      Form.update();
+      _Items2.default.update();
+    });
+  },
+
+  after_render: function after_render() {
+    Form.cancelButtonHandler();
+    Form.saveButtonHandler();
+  }
+};
+
+exports.default = Form;
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _Item = __webpack_require__(6);
+
+var _Item2 = _interopRequireDefault(_Item);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var getItems = function getItems() {
+  var items = JSON.parse(localStorage.getItem('items'));
+  var query = localStorage.getItem('query');
+  var status = localStorage.getItem('status');
+  var priority = localStorage.getItem('priority');
+  if (!items) {
+    return [];
+  }
+
+  return items.filter(function (item) {
+    if (status === 'all') {
+      return true;
+    };
+    if (status === item.status) {
+      return true;
+    } else {
+      return false;
+    }
+  }).filter(function (item) {
+    if (priority === 'all') {
+      return true;
+    };
+    if (priority === item.priority) {
+      return true;
+    } else {
+      return false;
+    }
+  }).filter(function (item) {
+    if (query === '' || query === undefined) {
+      return true;
+    } else {
+      return item.title.toLowerCase().includes(query.toLowerCase());
+    }
+  });
+};
+var Items = {
+  state: {
+    items: getItems()
+  },
+  update: function update() {
+    Items.state.items = getItems();
+    document.getElementsByClassName('items')[0].outerHTML = Items.render();
+    Items.after_render();
+  },
+  render: function render() {
+    Items.state.items = getItems();
+    var view = Items.state.items.map(function (item) {
+      return '' + (0, _Item2.default)(item);
+    }).join('\n');
+    return '<section class="items">' + view + '</section>';
+  },
+  after_render: function after_render() {}
+
+};
+
+exports.default = Items;
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var Item = function Item(props) {
+  var state = {
+    id: 0
+  };
+  var update = function update() {
+    state.item = JSON.parse(localStorage.getItem('items'));
+    document.getElementsByClassName('items')[0].outerHTML = Item.render();
+    undefined.after_render();
+  };
+  var render = function render() {
+    var view = '\n          <article class="item" id="' + props.id + '">\n            <h2 class="item-title">' + props.title + '</h2>\n            <p class="item-description">' + props.description + '</p>\n            <span class="item-priority">' + props.priority + '<span>\n            <div class="item-button-wrap">\n              <button name="item-done-button">done</button>\n              <button name="item-edit-button">edit</button>\n              <button name="item-delete-button">delete</button>\n            </div>\n          </article>\n        ';
+    return view;
+  };
+  var after_render = function after_render() {};
+
+  return render();
+};
+
+exports.default = Item;
 
 /***/ })
 /******/ ]);
