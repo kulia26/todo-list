@@ -30,8 +30,8 @@ const Form = {
     const view = `
         <div class="form" style="display:${Form.state.visible ? 'block' : 'none'}">
         <h2 class="form-title">${Form.state.type === 'create' ? 'Create' : 'Edit'}</h2>
-          <p>Title:<input type="text" name="title" value=${Form.state.type === 'create' ? '' : Form.state.item.title}></p>
-          <p>Description:<input type="text" name="description" value=${Form.state.type === 'create' ? '' : Form.state.item.description}></p>
+          <p>Title:<input type="text" name="title" value="${Form.state.type === 'create' ? '' : Form.state.item.title}"></p>
+          <p>Description:<input type="text" name="description" value="${Form.state.type === 'create' ? '' : Form.state.item.description}"></p>
           <p>Priority
             <select class="form-priority" name="form-select-priority">
               <option value="high" ${(Form.state.item.priority === 'high' || Form.state.type === 'create') ? 'selected' : ''}>high</option>
