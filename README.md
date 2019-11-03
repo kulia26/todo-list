@@ -1,4 +1,5 @@
 TODOList - simple task manager write on vanilla js.
+https://kulia26.github.io/todo-list/dist/
 
 
 run dev server:
