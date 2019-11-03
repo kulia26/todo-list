@@ -32,6 +32,5 @@ Applicaton structure:
 │   │   └── Nav.js
 │   ├── normalize.css
 │   └── style.css
-├── tree.txt
 └── webpack.config.js
 ```
