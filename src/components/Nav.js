@@ -33,17 +33,17 @@ const Nav = {
   render: () => {
     const view = `
           <nav>
-            <div class="search-input-wrap">
+            <div class="wrap">
               <input class="search-input" type="search" name="search-input" value="" placeholder="Type your query">
             </div>
-            <div class="select-status-wrap">
+            <div class="wrap">
               <select class="select-status" name="select-status">
                 <option value="all" selected>all</option>   
                 <option value="open">open</option> 
                 <option value="done">done</option>
               </select>
             </div>
-            <div class="select-priority-wrap">
+            <div class="wrap">
               <select class="select-priority" name="select-priority">
                 <option value="all" selected>all</option>   
                 <option value="high">high</option>
@@ -51,7 +51,7 @@ const Nav = {
                 <option value="low">low</option>
               </select>
             </div>
-            <div class="create-button-wrap">
+            <div class="wrap">
               <button name="create-button">Create</button>
             </div>
           </nav>

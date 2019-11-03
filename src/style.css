@@ -11,12 +11,17 @@ header{
 nav{
     display: flex;
     flex-direction: row;
-    height: 1.7rem;
+    flex-wrap:wrap;
+    justify-content: center;
     margin-top: 2rem;
 }
-nav div{
-    flex: auto;
+nav>div{
+    flex:0 0 25%;
+    padding-top: 0.5rem;
+    min-width: 140px;
+    height: 1.7rem;
 }
+
 button{
     height: 100%;
 }
@@ -26,7 +31,7 @@ select{
 nav select{
     margin: 0 auto;
     display: block;
-    width: 150px;
+    width: 140px;
 }
 nav button{
     margin: 0 auto;
