@@ -2,7 +2,7 @@
 import Item from './Item';
 
 const getItems = () => {
-  let items = JSON.parse(localStorage.getItem('items'));
+  const items = JSON.parse(localStorage.getItem('items'));
   const query = localStorage.getItem('query');
   const status = localStorage.getItem('status');
   const priority = localStorage.getItem('priority');
@@ -41,19 +41,26 @@ const getItems = () => {
 const Items = {
   state: {
     items: getItems(),
+    itemsComponents:[],
   },
   update: () => {
     Items.state.items = getItems();
+    Items.state.itemsComponents=[],
     document.getElementsByClassName('items')[0].outerHTML = Items.render();
     Items.after_render();
   },
   render: () => {
     Items.state.items = getItems();
-    const view = Items.state.items.map((item) => `${Item(item)}`).join('\n');
+    const view = Items.state.items.map((item) => {
+      const component = new Item(item);
+      Items.state.itemsComponents.push(component);
+      return `${(component.render())}`;  
+    }
+    ).join('\n');
     return `<section class="items">${view}</section>`;
   },
   after_render: () => {
-
+    Items.state.itemsComponents.forEach((component)=>component.after_render());
   },
 
 };

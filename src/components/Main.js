@@ -19,6 +19,7 @@ const Main = {
   after_render: () => {
     Nav.after_render();
     Form.after_render();
+    Items.after_render();
   },
 
 };
