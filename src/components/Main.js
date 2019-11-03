@@ -9,9 +9,9 @@ const Main = {
     const view = `
             ${Header.render()}
             ${Nav.render()}
-            <section class="main">
+            
                 ${Form.render()}
-            </section>
+            
             ${Items.render()}
         `;
     return view;

@@ -23,12 +23,13 @@ const Form = {
     Form.state.item = { status: 'high' };
   },
   update: () => {
-    document.getElementsByClassName('form')[0].outerHTML = Form.render();
+    document.getElementsByClassName('form-wrap')[0].outerHTML = Form.render();
     Form.afterRender();
   },
   render: () => {
     const view = `
-        <div class="form" style="display:${Form.state.visible ? 'block' : 'none'}">
+    <div class="form-wrap" style="display:${Form.state.visible ? 'block' : 'none'}">
+        <div class="form">
         <h2 class="form-title">${Form.state.type === 'create' ? 'Create' : 'Edit'}</h2>
           <p>Title:<input type="text" name="title" value="${Form.state.type === 'create' ? '' : Form.state.item.title}"></p>
           <p>Description:<input type="text" name="description" value="${Form.state.type === 'create' ? '' : Form.state.item.description}"></p>
@@ -47,8 +48,8 @@ const Form = {
                 <button name="save-button">Save</button>
             </div>
           </div>
-          
-        <div>
+        </div>
+      </div>
         `;
     return view;
   },
