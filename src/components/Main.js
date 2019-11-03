@@ -16,10 +16,10 @@ const Main = {
         `;
     return view;
   },
-  after_render: () => {
-    Nav.after_render();
-    Form.after_render();
-    Items.after_render();
+  afterRender: () => {
+    Nav.afterRender();
+    Form.afterRender();
+    Items.afterRender();
   },
 
 };

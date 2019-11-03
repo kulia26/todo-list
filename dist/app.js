@@ -100,14 +100,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var app = function app() {
   if (localStorage.getItem('items') === null) {
     localStorage.setItem('items', JSON.stringify([]));
-  };
+  }
   localStorage.setItem('query', '');
   localStorage.setItem('status', 'all');
   localStorage.setItem('priority', 'all');
 
   var root = document.getElementById('root');
   root.innerHTML = _Main2.default.render();
-  _Main2.default.after_render();
+  _Main2.default.afterRender();
 };
 app();
 
@@ -146,9 +146,10 @@ var Main = {
     var view = '\n            ' + _Header2.default.render() + '\n            ' + _Nav2.default.render() + '\n            <section class="main">\n                ' + _Form2.default.render() + '\n            </section>\n            ' + _Items2.default.render() + '\n        ';
     return view;
   },
-  after_render: function after_render() {
-    _Nav2.default.after_render();
-    _Form2.default.after_render();
+  afterRender: function afterRender() {
+    _Nav2.default.afterRender();
+    _Form2.default.afterRender();
+    _Items2.default.afterRender();
   }
 
 };
@@ -168,7 +169,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var Header = {
   render: function render() {
-    var view = "\n            <header class=\"header\">\n                <h1> Make your things easier </h1>\n            </header>\n        ";
+    var view = "\n            <header class=\"header\">\n                <h1> TODOList </h1>\n            </header>\n        ";
     return view;
   }
 };
@@ -198,20 +199,19 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var handleChange = function handleChange() {
   var input = document.getElementsByName('search-input')[0];
-  input.addEventListener('change', function (event) {
+  input.addEventListener('change', function () {
     localStorage.setItem('query', input.value);
-    _Form2.default.update();
     _Items2.default.update();
   });
 
   var status = document.getElementsByName('select-status')[0];
-  status.addEventListener('change', function (event) {
+  status.addEventListener('change', function () {
     localStorage.setItem('status', status.options[status.selectedIndex].value);
     _Items2.default.update();
   });
 
   var priority = document.getElementsByName('select-priority')[0];
-  priority.addEventListener('change', function (event) {
+  priority.addEventListener('change', function () {
     localStorage.setItem('priority', priority.options[priority.selectedIndex].value);
     _Items2.default.update();
   });
@@ -219,8 +219,8 @@ var handleChange = function handleChange() {
 
 var createButtonHandler = function createButtonHandler() {
   var button = document.getElementsByName('create-button')[0];
-  button.addEventListener('click', function (event) {
-    localStorage.setItem('form-visible', JSON.stringify(true));
+  button.addEventListener('click', function () {
+    _Form2.default.setVisible(true);
     _Form2.default.update();
   });
 };
@@ -230,7 +230,7 @@ var Nav = {
     var view = '\n            <div class="search-input-wrap">\n              <input class="search-input" type="search" name="search-input" value="" placeholder="Type your query">\n            </div>\n            <div class="select-status-wrap">\n              <select class="select-status" name="select-status">\n                <option value="all" selected>all</option>   \n                <option value="open">open</option> \n                <option value="done">done</option>\n              </select>\n            </div>\n            <div class="select-priority-wrap">\n              <select class="select-priority" name="select-priority">\n                <option value="all" selected>all</option>   \n                <option value="high">high</option>\n                <option value="normal">normal</option>\n                <option value="low">low</option>\n              </select>\n            </div>\n            <div class="create-button-wrap">\n              <button name="create-button">Create</button>\n            </div>\n        ';
     return view;
   },
-  after_render: function after_render() {
+  afterRender: function afterRender() {
     handleChange();
     createButtonHandler();
   }
@@ -257,22 +257,38 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var Form = {
   state: {
-    type: 'create',
-    visible: false
+    item: {
+      status: 'high'
+    },
+    visible: false,
+    type: 'create'
+  },
+  setVisible: function setVisible(visible) {
+    Form.state.visible = visible;
+  },
+  setItem: function setItem(item) {
+    Form.state.item = item;
+  },
+  setType: function setType(type) {
+    Form.state.type = type;
+  },
+  dropItem: function dropItem() {
+    Form.state.item = { status: 'high' };
   },
   update: function update() {
-    Form.state.visible = JSON.parse(localStorage.getItem('form-visible'));
     document.getElementsByClassName('form')[0].outerHTML = Form.render();
-    Form.after_render();
+    Form.afterRender();
   },
   render: function render() {
-    var view = '\n        <div class="form" style="display:' + (Form.state.visible ? 'block' : 'none') + '">\n          Title:<input type="text" name="title" value=' + (Form.state.type === 'create' ? 'Title' : 'none') + '>\n          Title:<input type="text" name="description" value=' + (Form.state.type === 'create' ? 'Description' : 'none') + '>\n          <select class="form-priority" name="form-select-priority">\n            <option value="high" selected>high</option>\n            <option value="normal">normal</option>\n            <option value="low">low</option>\n          </select> \n          <div class="form-button-wrap">\n              <button name="cancel-button">Cancel</button>\n          </div>\n          <div class="form-button-wrap">\n              <button name="save-button">Save</button>\n          </div>\n        <div>\n        ';
+    var view = '\n        <div class="form" style="display:' + (Form.state.visible ? 'block' : 'none') + '">\n        <h2 class="form-title">' + (Form.state.type === 'create' ? 'Create' : 'Edit') + '</h2>\n          Title:<input type="text" name="title" value=' + (Form.state.type === 'create' ? '' : Form.state.item.title) + '>\n          Description:<input type="text" name="description" value=' + (Form.state.type === 'create' ? '' : Form.state.item.description) + '>\n          <select class="form-priority" name="form-select-priority">\n            <option value="high" ' + (Form.state.item.priority === 'high' || Form.state.type === 'create' ? 'selected' : '') + '>high</option>\n            <option value="normal" ' + (Form.state.item.priority === 'normal' ? 'selected' : '') + '>normal</option>\n            <option value="low" ' + (Form.state.item.priority === 'low' ? 'selected' : '') + '>low</option>\n          </select> \n          <div class="form-button-wrap">\n              <button name="cancel-button">Cancel</button>\n          </div>\n          <div class="form-button-wrap">\n              <button name="save-button">Save</button>\n          </div>\n        <div>\n        ';
     return view;
   },
   cancelButtonHandler: function cancelButtonHandler() {
     var button = document.getElementsByName('cancel-button')[0];
     button.addEventListener('click', function () {
       localStorage.setItem('form-visible', JSON.stringify(false));
+      Form.setVisible(false);
+      Form.dropItem();
       Form.update();
     });
   },
@@ -280,23 +296,36 @@ var Form = {
     var button = document.getElementsByName('save-button')[0];
     button.addEventListener('click', function () {
       var priorityEl = document.getElementsByName('form-select-priority')[0];
-      var item = {
-        title: document.getElementsByName('title')[0].value,
-        description: document.getElementsByName('description')[0].value,
-        priority: priorityEl.options[priorityEl.selectedIndex].value,
-        id: 'f' + (+new Date()).toString(16),
-        status: "open"
-      };
       var items = JSON.parse(localStorage.getItem('items'));
-      items.push(item);
+
+      if (Form.state.type === 'edit') {
+        for (var i = 0; i < items.length; i += 1) {
+          if (items[i].id === Form.state.item.id) {
+            items[i].title = document.getElementsByName('title')[0].value;
+            items[i].description = document.getElementsByName('description')[0].value;
+            items[i].priority = priorityEl.options[priorityEl.selectedIndex].value;
+          }
+        }
+      } else {
+        var item = {
+          title: document.getElementsByName('title')[0].value,
+          description: document.getElementsByName('description')[0].value,
+          priority: priorityEl.options[priorityEl.selectedIndex].value,
+          id: 'f' + (+new Date()).toString(16),
+          status: 'open'
+        };
+        items.push(item);
+      }
+
       localStorage.setItem('items', JSON.stringify(items));
       localStorage.setItem('form-visible', JSON.stringify(false));
+      Form.setVisible(false);
+      Form.dropItem();
       Form.update();
       _Items2.default.update();
     });
   },
-
-  after_render: function after_render() {
+  afterRender: function afterRender() {
     Form.cancelButtonHandler();
     Form.saveButtonHandler();
   }
@@ -333,46 +362,51 @@ var getItems = function getItems() {
   return items.filter(function (item) {
     if (status === 'all') {
       return true;
-    };
+    }
     if (status === item.status) {
       return true;
-    } else {
-      return false;
     }
+    return false;
   }).filter(function (item) {
     if (priority === 'all') {
       return true;
-    };
+    }
     if (priority === item.priority) {
       return true;
-    } else {
-      return false;
     }
+    return false;
   }).filter(function (item) {
     if (query === '' || query === undefined) {
       return true;
-    } else {
-      return item.title.toLowerCase().includes(query.toLowerCase());
     }
+    return item.title.toLowerCase().includes(query.toLowerCase());
   });
 };
 var Items = {
   state: {
-    items: getItems()
+    items: getItems(),
+    itemsComponents: []
   },
   update: function update() {
     Items.state.items = getItems();
     document.getElementsByClassName('items')[0].outerHTML = Items.render();
-    Items.after_render();
+    Items.afterRender();
   },
   render: function render() {
     Items.state.items = getItems();
+    Items.state.itemsComponents = [];
     var view = Items.state.items.map(function (item) {
-      return '' + (0, _Item2.default)(item);
+      var component = new _Item2.default(item);
+      Items.state.itemsComponents.push(component);
+      return '' + component.render();
     }).join('\n');
     return '<section class="items">' + view + '</section>';
   },
-  after_render: function after_render() {}
+  afterRender: function afterRender() {
+    Items.state.itemsComponents.forEach(function (component) {
+      return component.afterRender();
+    });
+  }
 
 };
 
@@ -389,23 +423,109 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var Item = function Item(props) {
-  var state = {
-    id: 0
-  };
-  var update = function update() {
-    state.item = JSON.parse(localStorage.getItem('items'));
-    document.getElementsByClassName('items')[0].outerHTML = Item.render();
-    undefined.after_render();
-  };
-  var render = function render() {
-    var view = '\n          <article class="item" id="' + props.id + '">\n            <h2 class="item-title">' + props.title + '</h2>\n            <p class="item-description">' + props.description + '</p>\n            <span class="item-priority">' + props.priority + '<span>\n            <div class="item-button-wrap">\n              <button name="item-done-button">done</button>\n              <button name="item-edit-button">edit</button>\n              <button name="item-delete-button">delete</button>\n            </div>\n          </article>\n        ';
-    return view;
-  };
-  var after_render = function after_render() {};
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-  return render();
-};
+var _Items = __webpack_require__(5);
+
+var _Items2 = _interopRequireDefault(_Items);
+
+var _Form = __webpack_require__(4);
+
+var _Form2 = _interopRequireDefault(_Form);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Item = function () {
+  function Item(item) {
+    _classCallCheck(this, Item);
+
+    this.item = item;
+    this.doneButtonHandler.bind(this);
+    this.deleteButtonHandler.bind(this);
+    this.afterRender.bind(this);
+    this.editButtonHandler.bind(this);
+  }
+
+  _createClass(Item, [{
+    key: 'update',
+    value: function update() {
+      document.getElementById(this.item.id).outerHTML = this.render();
+      this.afterRender();
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var view = '\n          <article class="item ' + this.item.status + '" id="' + this.item.id + '">\n            <h2 class="item-title">' + this.item.title + '</h2>\n            <p class="item-description">' + this.item.description + '</p>\n            <span class="item-priority">' + this.item.priority + '<span>\n            <div class="item-button-wrap">\n              <button name="item-done-button" id="item-done-button">done</button>\n              <button name="item-edit-button" id="item-edit-button">edit</button>\n              <button name="item-delete-button" id="item-delete-button">delete</button>\n            </div>\n          </article>\n        ';
+      return view;
+    }
+  }, {
+    key: 'doneButtonHandler',
+    value: function doneButtonHandler() {
+      var _this = this;
+
+      var id = this.item.id;
+
+      var button = document.querySelector('#' + id + ' #item-done-button');
+      button.addEventListener('click', function () {
+        var items = JSON.parse(localStorage.getItem('items'));
+        for (var i = 0; i < items.length; i += 1) {
+          if (items[i].id === id) {
+            items[i].status = 'done';
+            _this.item = items[i];
+          }
+        }
+        localStorage.setItem('items', JSON.stringify(items));
+        _this.update();
+      });
+    }
+  }, {
+    key: 'deleteButtonHandler',
+    value: function deleteButtonHandler() {
+      var id = this.item.id;
+
+      var button = document.querySelector('#' + id + ' #item-delete-button');
+      button.addEventListener('click', function () {
+        var items = JSON.parse(localStorage.getItem('items'));
+        for (var i = 0; i < items.length; i += 1) {
+          if (items[i].id === id) {
+            items.splice(i, 1);
+          }
+        }
+        localStorage.setItem('items', JSON.stringify(items));
+        _Items2.default.update();
+      });
+    }
+  }, {
+    key: 'editButtonHandler',
+    value: function editButtonHandler() {
+      var id = this.item.id;
+
+      var button = document.querySelector('#' + id + ' #item-edit-button');
+      button.addEventListener('click', function () {
+        var items = JSON.parse(localStorage.getItem('items'));
+        for (var i = 0; i < items.length; i += 1) {
+          if (items[i].id === id) {
+            _Form2.default.setItem(items[i]);
+            _Form2.default.setVisible(true);
+            _Form2.default.setType('edit');
+            _Form2.default.update();
+          }
+        }
+      });
+    }
+  }, {
+    key: 'afterRender',
+    value: function afterRender() {
+      this.doneButtonHandler();
+      this.deleteButtonHandler();
+      this.editButtonHandler();
+    }
+  }]);
+
+  return Item;
+}();
 
 exports.default = Item;
 

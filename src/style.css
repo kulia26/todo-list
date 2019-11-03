@@ -1,0 +1,82 @@
+body{
+    font-family: 'Open Sans', sans-serif;
+}
+#root{
+    width: 85%;
+    margin: 0 auto;
+}
+header{
+    margin: 1rem 0;
+}
+nav{
+    display: flex;
+    flex-direction: row;
+    height: 1.7rem;
+    margin-top: 2rem;
+}
+nav div{
+    flex: auto;
+}
+button{
+    height: 100%;
+}
+select{
+    height: 100%;
+}   
+nav select{
+    margin: 0 auto;
+    display: block;
+    width: 150px;
+}
+nav button{
+    margin: 0 auto;
+    display: block;
+    width: 120px;
+}
+input{
+    height: 100%;
+    width: 100%;
+}
+.items{
+    display: flex;
+    flex-direction: row;
+    flex-wrap:wrap;
+    justify-content: center;
+    margin-top: 2rem;
+
+}
+.item{
+    flex:0 0 25%;
+    min-width:250px;
+    min-height: 200px;
+    padding: 20px;
+    background: #e2fde7;
+    margin: 20px;
+}
+.done{
+    background: #e2f5fd;
+}
+.form{
+    position: absolute;
+    top:35%;
+    left: 15%;
+    height: auto;
+    width:300px;
+}
+.form input{
+    width: 100%;
+    max-width: 0 1rem;
+}
+.form button{
+    min-width: 30px;
+    max-width: 90px;
+    width: 75px; 
+}
+.form-button-wrap{
+    display: inline;
+    margin: 0 1rem;
+}
+.form-buttons-wrap{
+    width:100%;
+    text-align:center;
+}

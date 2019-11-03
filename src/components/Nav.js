@@ -3,20 +3,19 @@ import Items from './Items';
 
 const handleChange = () => {
   const input = document.getElementsByName('search-input')[0];
-  input.addEventListener('change', (event) => {
+  input.addEventListener('change', () => {
     localStorage.setItem('query', input.value);
-    Form.update();
     Items.update();
   });
 
   const status = document.getElementsByName('select-status')[0];
-  status.addEventListener('change', (event) => {
+  status.addEventListener('change', () => {
     localStorage.setItem('status', status.options[status.selectedIndex].value);
     Items.update();
   });
 
   const priority = document.getElementsByName('select-priority')[0];
-  priority.addEventListener('change', (event) => {
+  priority.addEventListener('change', () => {
     localStorage.setItem('priority', priority.options[priority.selectedIndex].value);
     Items.update();
   });
@@ -24,8 +23,8 @@ const handleChange = () => {
 
 const createButtonHandler = () => {
   const button = document.getElementsByName('create-button')[0];
-  button.addEventListener('click', (event) => {
-    localStorage.setItem('form-visible', JSON.stringify(true));
+  button.addEventListener('click', () => {
+    Form.setVisible(true);
     Form.update();
   });
 };
@@ -33,6 +32,7 @@ const createButtonHandler = () => {
 const Nav = {
   render: () => {
     const view = `
+          <nav>
             <div class="search-input-wrap">
               <input class="search-input" type="search" name="search-input" value="" placeholder="Type your query">
             </div>
@@ -54,10 +54,11 @@ const Nav = {
             <div class="create-button-wrap">
               <button name="create-button">Create</button>
             </div>
+          </nav>
         `;
     return view;
   },
-  after_render: () => {
+  afterRender: () => {
     handleChange();
     createButtonHandler();
   },

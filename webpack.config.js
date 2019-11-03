@@ -17,6 +17,10 @@ module.exports = {
           presets: [ 'es2015'],
         }
       },
+      {
+        test: /\.css$/i,
+        use: ['style-loader', 'css-loader'],
+      },
     ]
   },
   devServer: {
