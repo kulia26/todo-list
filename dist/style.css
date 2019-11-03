@@ -472,4 +472,8 @@ span.item-priority {
     width:100%;
     text-align:center;
 }
-
+footer {
+    position: absolute;
+    bottom: 0;
+    height: 80px;
+}
