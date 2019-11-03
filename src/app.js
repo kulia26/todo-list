@@ -1,5 +1,7 @@
 import Main from './components/Main';
+import './normalize.css';
 import './style.css';
+
 
 const app = () => {
   if (localStorage.getItem('items') === null) {

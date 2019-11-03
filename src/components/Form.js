@@ -74,6 +74,7 @@ const Form = {
             items[i].title = document.getElementsByName('title')[0].value;
             items[i].description = document.getElementsByName('description')[0].value;
             items[i].priority = priorityEl.options[priorityEl.selectedIndex].value;
+            items[i].status = 'open';
           }
         }
       } else {

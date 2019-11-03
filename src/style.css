@@ -16,12 +16,20 @@ nav{
     flex-wrap:wrap;
     justify-content: center;
     margin-top: 2rem;
+    height: 2.5rem;
 }
 nav>div{
-    flex:0 0 25%;
-    padding-top: 0.5rem;
-    min-width: 140px;
-    height: 1.7rem;
+    flex:0 0 20%;
+    padding-left: 5px;
+    padding-top: 5px;
+    box-sizing: border-box;
+    width: 140px;
+    height: 100%;
+}
+nav>div:first-child{
+    flex:0 0 40%;
+    width: 40%;
+    min-width: 200px;
 }
 
 button{
@@ -33,7 +41,8 @@ select{
 nav select{
     margin: 0 auto;
     display: block;
-    width: 140px;
+    width: 120px;
+    
 }
 nav button{
     margin: 0 auto;
@@ -63,6 +72,15 @@ input{
 .done{
     background: #e2f5fd;
 }
+
+span.item-priority {
+    display: block;
+    float: right;
+    font-size: 30px;
+    position: relative;
+    top: 0;
+    right: 0;
+}
 .form{
     height: 300px;
     width:300px;
@@ -75,13 +93,15 @@ input{
     padding: 20px;
 }
 .form-wrap {
+    backdrop-filter: blur(2px);
     height: 100%;
     width: 100%;
     position: absolute;
     top: 0;
     left: 0;
     margin-left: 0;
-    background: #00538e9a;
+    z-index: 10;
+    background: #00406d33;
 }
 .form input{
     width: 100%;
@@ -99,6 +119,7 @@ input{
     margin: 0 1rem;
 }
 .form-buttons-wrap{
+    margin-top: 2.2rem;
     width:100%;
     text-align:center;
 }

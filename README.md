@@ -15,10 +15,23 @@ $ npx webpack
 Applicaton structure:
 
 ```
-dist
-    app.js
-    index.html
-src
-    components
-        Form.js
+├── dist
+│   ├── app.js
+│   └── index.html
+├── package.json
+├── package-lock.json
+├── README.md
+├── src
+│   ├── app.js
+│   ├── components
+│   │   ├── Form.js
+│   │   ├── Header.js
+│   │   ├── Item.js
+│   │   ├── Items.js
+│   │   ├── Main.js
+│   │   └── Nav.js
+│   ├── normalize.css
+│   └── style.css
+├── tree.txt
+└── webpack.config.js
 ```

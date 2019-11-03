@@ -11,6 +11,7 @@
   "author": "Bohdan Kulinich",
   "license": "ISC",
   "devDependencies": {
+    "@babel/core": "^7.6.4",
     "@babel/preset-env": "^7.6.3",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.5",

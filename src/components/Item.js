@@ -8,6 +8,12 @@ class Item {
     this.deleteButtonHandler.bind(this);
     this.afterRender.bind(this);
     this.editButtonHandler.bind(this);
+    this.priotities = {
+      high: '🔥',
+      normal: '🕐',
+      low: '🌊',
+      none: '✔️',
+    };
   }
 
   update() {
@@ -18,14 +24,16 @@ class Item {
   render() {
     const view = `
           <article class="item ${this.item.status}" id="${this.item.id}">
+          <span class="item-priority">${this.priotities[this.item.priority]}</span>
             <h2 class="item-title">${this.item.title}</h2>
+            
             <p class="item-description">${this.item.description}</p>
-            <span class="item-priority">${this.item.priority}<span>
             <div class="item-button-wrap">
               <button name="item-done-button" id="item-done-button">done</button>
               <button name="item-edit-button" id="item-edit-button">edit</button>
               <button name="item-delete-button" id="item-delete-button">delete</button>
             </div>
+            
           </article>
         `;
     return view;
@@ -39,6 +47,7 @@ class Item {
       for (let i = 0; i < items.length; i += 1) {
         if (items[i].id === id) {
           items[i].status = 'done';
+          items[i].priority = 'none';
           this.item = items[i];
         }
       }
