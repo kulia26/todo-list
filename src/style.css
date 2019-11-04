@@ -16,7 +16,7 @@ nav{
     flex-wrap:wrap;
     justify-content: center;
     margin-top: 2rem;
-    height: 2.5rem;
+    min-height: 2.5rem;
 }
 nav>div{
     flex:0 0 20%;
